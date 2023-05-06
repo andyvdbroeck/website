@@ -1,0 +1,54 @@
+<html><body>
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.File</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.FileInputStream</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.IOException</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.OutputStream</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.InetSocketAddress</span><span style="color: #333333">;</span>
+<span style="color: #888888">//import java.nio.file.Files;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.HashMap</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.Map</span><span style="color: #333333">;</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">com.sun.net.httpserver.HttpExchange</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">com.sun.net.httpserver.HttpHandler</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">com.sun.net.httpserver.HttpServer</span><span style="color: #333333">;</span>
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Webserver</span> <span style="color: #333333">{</span>
+	
+	<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">final</span> String path <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;=== PATH TO YOUR WEBCONTENT ===&quot;</span><span style="color: #333333">;</span>
+	
+	<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">final</span> Map<span style="color: #333333">&lt;</span>String<span style="color: #333333">,</span><span style="color: #333399; font-weight: bold">byte</span><span style="color: #333333">[]&gt;</span> files <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> HashMap<span style="color: #333333">&lt;</span>String<span style="color: #333333">,</span><span style="color: #333399; font-weight: bold">byte</span><span style="color: #333333">[]&gt;();</span>
+	
+	<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #333399; font-weight: bold">byte</span><span style="color: #333333">[]</span> <span style="color: #0066BB; font-weight: bold">readContentIntoByteArray</span><span style="color: #333333">(</span>File file<span style="color: #333333">)</span> <span style="color: #008800; font-weight: bold">throws</span> IOException <span style="color: #333333">{</span>
+	    FileInputStream fileInputStream <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> FileInputStream<span style="color: #333333">(</span>file<span style="color: #333333">);</span>
+	    <span style="color: #333399; font-weight: bold">byte</span><span style="color: #333333">[]</span> bFile <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">byte</span><span style="color: #333333">[(</span><span style="color: #333399; font-weight: bold">int</span><span style="color: #333333">)</span> file<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">()];</span>
+	    fileInputStream<span style="color: #333333">.</span><span style="color: #0000CC">read</span><span style="color: #333333">(</span>bFile<span style="color: #333333">);</span>
+	    fileInputStream<span style="color: #333333">.</span><span style="color: #0000CC">close</span><span style="color: #333333">();</span>
+	    <span style="color: #008800; font-weight: bold">return</span> bFile<span style="color: #333333">;</span>
+	<span style="color: #333333">}</span>
+	
+	<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">main</span><span style="color: #333333">(</span>String<span style="color: #333333">[]</span> args<span style="color: #333333">)</span> <span style="color: #008800; font-weight: bold">throws</span> Exception <span style="color: #333333">{</span>
+            HttpServer server <span style="color: #333333">=</span> HttpServer<span style="color: #333333">.</span><span style="color: #0000CC">create</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> InetSocketAddress<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">80</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">);</span>
+            server<span style="color: #333333">.</span><span style="color: #0000CC">createContext</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;/&quot;</span><span style="color: #333333">,</span> <span style="color: #008800; font-weight: bold">new</span> HttpHandler<span style="color: #333333">()</span> <span style="color: #333333">{</span>
+        	<span style="color: #555555; font-weight: bold">@Override</span>
+                <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">handle</span><span style="color: #333333">(</span>HttpExchange t<span style="color: #333333">)</span> <span style="color: #008800; font-weight: bold">throws</span> IOException <span style="color: #333333">{</span>
+            	    String file <span style="color: #333333">=</span> t<span style="color: #333333">.</span><span style="color: #0000CC">getRequestURI</span><span style="color: #333333">().</span><span style="color: #0000CC">getPath</span><span style="color: #333333">();</span>
+            	    <span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>file<span style="color: #333333">.</span><span style="color: #0000CC">isEmpty</span><span style="color: #333333">()</span> <span style="color: #333333">||</span> file<span style="color: #333333">.</span><span style="color: #0000CC">equals</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;/&quot;</span><span style="color: #333333">))</span> file <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;/index.html&quot;</span><span style="color: #333333">;</span>
+                    <span style="color: #333399; font-weight: bold">byte</span><span style="color: #333333">[]</span> fileContent <span style="color: #333333">=</span> files<span style="color: #333333">.</span><span style="color: #0000CC">get</span><span style="color: #333333">(</span>file<span style="color: #333333">);</span>
+                    <span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>fileContent<span style="color: #333333">==</span><span style="color: #008800; font-weight: bold">null</span><span style="color: #333333">)</span> <span style="color: #333333">{</span>
+                	<span style="color: #888888">//fileContent = Files.readAllBytes(new File(path+file).toPath());</span>
+                	fileContent <span style="color: #333333">=</span> readContentIntoByteArray<span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> File<span style="color: #333333">(</span>path<span style="color: #333333">+</span>file<span style="color: #333333">));</span>
+                	files<span style="color: #333333">.</span><span style="color: #0000CC">put</span><span style="color: #333333">(</span>file<span style="color: #333333">,</span> fileContent<span style="color: #333333">);</span>
+                    <span style="color: #333333">}</span>
+                    t<span style="color: #333333">.</span><span style="color: #0000CC">sendResponseHeaders</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">200</span><span style="color: #333333">,</span> fileContent<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">);</span>
+                    OutputStream os <span style="color: #333333">=</span> t<span style="color: #333333">.</span><span style="color: #0000CC">getResponseBody</span><span style="color: #333333">();</span>
+                    os<span style="color: #333333">.</span><span style="color: #0000CC">write</span><span style="color: #333333">(</span>fileContent<span style="color: #333333">);</span>
+                    os<span style="color: #333333">.</span><span style="color: #0000CC">close</span><span style="color: #333333">();</span>
+                <span style="color: #333333">}</span>
+            <span style="color: #333333">});</span>
+            server<span style="color: #333333">.</span><span style="color: #0000CC">setExecutor</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">null</span><span style="color: #333333">);</span> <span style="color: #888888">// default</span>
+            server<span style="color: #333333">.</span><span style="color: #0000CC">start</span><span style="color: #333333">();</span>
+	<span style="color: #333333">}</span>
+
+<span style="color: #333333">}</span>
+</pre></div>
+</body></html>
