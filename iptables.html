@@ -43,5 +43,15 @@ iptables <span style="color: #660033;">-A</span> INPUT <span style="color: #6600
 <span style="color: #666666; font-style: italic;"># Weiger alle andere inkomende en doorsturende verbindingen</span>
 iptables <span style="color: #660033;">-A</span> INPUT <span style="color: #660033;">-j</span> DROP
 iptables <span style="color: #660033;">-A</span> FORWARD <span style="color: #660033;">-j</span> DROP
-&nbsp;</pre>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># opmerking: (voer het script uit bij opstarten)</span>
+cd /etc/init.d/
+sudo nano iptables-opstartscript
+<span style="color: #666666; font-style: italic;"># voeg toe aan bestand:</span>
+#!/bin/bash
+/path/naar/je/iptables-script.sh
+<span style="color: #666666; font-style: italic;"># voer volgende 2 commando's uit</span>
+sudo chmod +x iptables-opstartscript
+sudo update-rc.d iptables-opstartscript defaults
+</pre>
 </body></html>
