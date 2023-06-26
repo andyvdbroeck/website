@@ -1,0 +1,23 @@
+<html>
+ <head>
+  <link rel="icon" href="weather.ico" type="image/x-icon" />
+  <title>Het weer in Opwijk</title>
+ </head>
+ <body>
+<h1 id="temperature"></h1>
+<h1 id="weathercode"></h1>
+<h1>METEO</h1>
+<iframe scrolling="no" width="334" height ="175" frameborder="0" marginwidth="0" marginheight="0" src="https://www.meteo.be/services/widget/.?postcode=1745&nbDay=2&type=4&lang=nl&bgImageId=1&bgColor=567cd2&scrolChoice=0&colorTempMax=A5D6FF&colorTempMin=ffffff"></iframe>
+  <script>
+  var arrayList = ["Groen","Geel","Orange","Rood"];
+  function parseValues(json) {
+    document.getElementById("temperature").innerHTML="Huidige temperatuur: " + json['current_weather']['temperature'] + "°";
+    document.getElementById("weathercode").innerHTML="Huidige weercode: " + arrayList[json["current_weather"]["weathercode"]];
+  }
+  const requestURL = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true";
+  fetch(requestURL)
+  .then((response) => response.json())
+  .then((json) => parseValues(json));
+  </script>
+ </body>
+</html>
