@@ -9,14 +9,14 @@
 <h1>METEO</h1>
 <iframe scrolling="no" width="334" height ="175" frameborder="0" marginwidth="0" marginheight="0" src="https://www.meteo.be/services/widget/.?postcode=1745&nbDay=2&type=4&lang=nl&bgImageId=1&bgColor=567cd2&scrolChoice=0&colorTempMax=A5D6FF&colorTempMin=ffffff"></iframe>
   <script>
-  var arrayList = ["0":"heldere hemel","1":"Klaar of gedeeltelijk bewolkt","2":"Klaar of gedeeltelijk bewolkt","3":"Klaar of gedeeltelijk bewolkt",
+  const weer = {"0":"heldere hemel","1":"Klaar of gedeeltelijk bewolkt","2":"Klaar of gedeeltelijk bewolkt","3":"Klaar of gedeeltelijk bewolkt",
                    "45":"mist","48":"mist","51":"motregen","53":"motregen","55":"motregen","56":"vochtig","57":"vochtig",
                    "61":"regen","63":"regen","65":"regen","66":"hagel","67":"hagel","71":"sneeuw","73":"sneeuw","75":"sneeuw",
                    "77":"dikke sneeuw","80":"stormregen","81":"stormregen","82":"stormregen","85":"sneeuwstorm","86":"sneeuwstorm",
-                   "95":"onweersbui","96":"onweersbui met hagel","99":"onweersbui met hagel"];
+                   "95":"onweersbui","96":"onweersbui met hagel","99":"onweersbui met hagel"};
   function parseValues(json) {
     document.getElementById("temperature").innerHTML="Huidige temperatuur: " + json['current_weather']['temperature'] + "°";
-    document.getElementById("weathercode").innerHTML="Huidige weercode: " + arrayList[json["current_weather"]["weathercode"]+""];
+    document.getElementById("weathercode").innerHTML="Huidige weercode: " + weer[json["current_weather"]["weathercode"]+""];
   }
   const requestURL = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true";
   fetch(requestURL)
