@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="babylonjs.ico">
+    <title>J.A.R.V.I.S.</title>
+
+        <!-- Babylon.js -->
+        <script src="babylon.js"></script>
+        <script src="babylonjs.loaders.min.js"></script>
+ 
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+	h1 {
+	    color: blue;
+	    text-align: center;
+	    border-radius: 25px;
+	    position: fixed;
+	    top: 10%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	}
+ 
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+ 
+<body>
+    <h1>J.A.R.V.I.S.</h1>
+    <canvas id="renderCanvas"></canvas>
+
+ 
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+
+        const engine = new BABYLON.Engine(canvas, true);
+        const scene = new BABYLON.Scene(engine);
+        
+	// camera
+	const camera = new BABYLON.ArcRotateCamera("camera",  Math.PI / 2.5, Math.PI / 3, 25, new BABYLON.Vector3(0, 0, 0), scene);
+	camera.attachControl(canvas, true);
+        camera.wheelPrecision = 100;
+	// lights
+	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 0, 1), scene);
+	light.intensity = 0.9;
+
+        BABYLON.SceneLoader.Append("./", "jarvis.obj", scene, function (scene) {
+ 
+        });
+
+	scene.registerBeforeRender(function() {
+
+            for (let i = 0; i < scene.meshes.length; i++) {
+		scene.meshes[i].rotation.x += (i%2==0)?0.005:-0.005;
+               	scene.meshes[i].rotation.y += (i%2==0)?0.005:-0.005;
+		scene.meshes[i].rotation.z += (i%2==0)?0.005:-0.005;
+		scene.meshes[i].rotation.x %= 2*Math.PI;
+               	scene.meshes[i].rotation.y %= 2*Math.PI;
+		scene.meshes[i].rotation.z %= 2*Math.PI;
+            }
+
+        });
+
+        engine.runRenderLoop(() => { scene.render(); });
+        window.onresize = () => engine.resize();
+    </script>
+</body>
+ 
+</html>
