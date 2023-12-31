@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <title>slideshow</title>
+    <link rel="icon" type="image/x-icon" href="slideshow.ico">
+    <style>
+      table {
+        margin-left: auto;
+        margin-right: auto;
+        border: 0px;
+        background-color:white;
+        width: 90vw;
+        height: 90vh;
+      }
+      tr {
+        background-color:white;
+        height: 90vh;
+        width: 90vw;
+      }
+      .previous {
+        text-align:center;
+        background-color:white;
+        height: 90vh;
+        width: 10vw;
+      }
+      .next {
+        text-align:center;
+        background-color:white;
+        height: 90vh;
+        width: 10vw;
+      }
+      .picture {
+        text-align:center;
+        background-color:white;
+        height: 90vh;
+        width: 70vw;
+      }
+      button {
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        background-color: #0000FF;
+      }
+      img {
+        height: 80%;
+        width: auto;
+      }
+      .footer {
+        background-color:white;
+        height: 5vh;
+        width: 90vw;
+      }
+    </style>
+    <script>
+      const START = 1;
+      const END = 48;
+
+      function previous() {
+        var source = document.getElementById("photo").src;
+        var number = parseInt(source.substring(source.lastIndexOf("/")+1,source.lastIndexOf(".")));
+        if(number==START) number = END+1;
+        document.getElementById("photo").src = "slideshow/"+ (--number)+".jpg";
+      }
+      function next() {
+        var source = document.getElementById("photo").src;
+        var number = parseInt(source.substring(source.lastIndexOf("/")+1,source.lastIndexOf(".")));
+        if(number==END) number = START-1;
+        document.getElementById("photo").src = "slideshow/"+ (++number)+".jpg";
+      }
+      function automatic() {
+        if(document.getElementById("automatic").checked==true) {
+          document.getElementById("prev").style.display="none";
+          document.getElementById("next").style.display="none";
+          next();
+          setTimeout(automatic,1000);
+        } else {
+          document.getElementById("prev").style.display="block";
+          document.getElementById("next").style.display="block";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td class="previous"><button id="prev" onclick="previous();">&lt;</button></td>
+        <td class="picture"><img id="photo" src="slideshow/1.jpg"></td>
+        <td class="next"><button id="next" onclick="next();">&gt;</button></td>
+      </tr>
+      <tr class="footer"><td colspan=3><input type="checkbox" id="automatic" onclick="automatic();">automatic slideshow</td></tr>
+    </table>
+  </body>
+</html>
