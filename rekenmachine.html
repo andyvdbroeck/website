@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>rekenmachine</title>
+	<link rel="icon" type="image/x-icon" href="rekenmachine.ico">
+    <style>
+      input {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        color: black;
+        font-size:40;
+        text-align: center;
+        border-radius: 25px;
+        height: 10vh;
+        width: 75vw;
+      }
+      table {
+        margin-left: auto;
+        margin-right: auto;
+        border:1px;
+        border-radius: 25px;
+        background-color:black;
+      }
+      td {
+        text-align:center;
+        font-weight: bold;
+        font-size: 42;
+        color: black;
+        margin: 0;
+        height: 15vh;
+        width: 20vw;
+        background-color:white;
+        border-radius: 25px;
+      }
+      td:hover {
+        background-color:blue;
+      }
+    </style>
+    <script>
+      function add(value) {
+        document.getElementById('display').value +=value;
+      }
+      function reset() {
+        document.getElementById('display').value='';
+      }
+      function confirm() {
+        document.getElementById('display').value = eval(document.getElementById('display').value);
+      }
+    </script>
+  </head>
+<body>
+  <input type="text" id="display" disabled>
+  <br/><br/>
+  <table>
+    <tr><td onclick="add('(')">(</td><td onclick="add(')')">)</td><td onclick="add('.')">.</td><td onclick="add('%')">%</td></tr>
+    <tr><td onclick="add('7')">7</td><td onclick="add('8')">8</td><td onclick="add('9')">9</td><td onclick="add('+')">+</td></tr>
+    <tr><td onclick="add('4')">4</td><td onclick="add('5')">5</td><td onclick="add('6')">6</td><td onclick="add('-')">-</td></tr>
+    <tr><td onclick="add('1')">1</td><td onclick="add('2')">2</td><td onclick="add('3')">3</td><td onclick="add('*')">*</td></tr>
+    <tr><td onclick="reset()">RESET</td><td onclick="add('0')">0</td><td onclick="confirm()">=</td><td onclick="add('/')">/</td></tr>
+  </table>
+</body>
+</html>
