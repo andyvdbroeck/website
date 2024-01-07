@@ -47,9 +47,10 @@
               case 3: document.body.style.backgroundColor = "green";break;
               case 4: document.body.style.backgroundColor = "orange";break;
               case 5: document.body.style.backgroundColor = "gray";break;
-              default: document.body.style.backgroundColor = "black";
+              case 6: document.body.style.backgroundColor = "black";break;
+              default: document.body.style.backgroundColor = "white";
           }
-          for(var i=1;i<=5;i++) {
+          for(var i=1;i<=6;i++) {
               if(number!=i) document.getElementById(i).pause();
           }
       }
@@ -68,7 +69,7 @@
     <div style="background-color:yellow;">
     <img src="https://qmusic.be/assets/favicon/default-67977c4f518d45d3a639958e1c6c072532dd2e05cbef9e42cb9f8ecde1964c97.ico" title="qmusic">
     <audio id="2" controls preload="metadata" onplay="changeBackgroundColor(2);">
-      <source src="https://21293.live.streamtheworld.com/QMUSIC.mp3" type="audio/mpeg">
+      <source src="https://streams.radio.dpgmedia.cloud/redirect/qmusic_be/mp3" type="audio/mpeg">
       Your browser does not support the audio tag.
     </audio>
     </div>
@@ -93,6 +94,14 @@
     <img src="https://topradio.be/favicons/favicon-196x196.png" title="topradio">
     <audio id="5" controls preload="metadata" onplay="changeBackgroundColor(5);">
       <source src="https://str.topradio.be/topradio.mp3" type="audio/mpeg">
+      Your browser does not support the audio tag.
+    </audio>
+    </div>
+    <br/><br/>
+    <div style="background-color:black;">
+    <img src="https://static.wikia.nocookie.net/logopedia/images/8/8c/Studio_Brussel_2019.svg" title="studiobrussel">
+    <audio id="6" controls preload="metadata" onplay="changeBackgroundColor(6);">
+      <source src="http://icecast.vrtcdn.be/stubru-high.mp3 " type="audio/mpeg">
       Your browser does not support the audio tag.
     </audio>
     </div>
