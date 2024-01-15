@@ -1,12 +1,662 @@
 <html>
  <head>
+  <meta charset="UTF-8">
   <title>kladblok</title>
   <link rel="icon" type="image/x-icon" href="kladblok.ico">
   <style>
-   
-  </style>
- </head>
- <body>
+body {
+  height: 90%;
+}
+textarea {
+  font-family: Arial;
+  font-size: 12pt;
+  resize: none;
+  width: 100%;
+  height: 85vh;
+}
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 7px 8px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  cursor: pointer;
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 7px 8px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+  background-color: grey;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 6px 8px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.show {
+  display: block;
+}
+  </style>
+  <script>
+function menuBestand() {
+  document.getElementById("menuBestand").classList.toggle("show");
+  document.getElementById("menuBewerken").classList.remove("show");
+  document.getElementById("menuOpmaak").classList.remove("show");
+  document.getElementById("menuBeeld").classList.remove("show");
+  document.getElementById("menuHelp").classList.remove("show");
+}
+
+function menuBewerken() {
+  document.getElementById("menuBestand").classList.remove("show");
+  document.getElementById("menuBewerken").classList.toggle("show");
+  document.getElementById("menuOpmaak").classList.remove("show");
+  document.getElementById("menuBeeld").classList.remove("show");
+  document.getElementById("menuHelp").classList.remove("show");
+}
+
+function menuOpmaak() {
+  document.getElementById("menuBestand").classList.remove("show");
+  document.getElementById("menuBewerken").classList.remove("show");
+  document.getElementById("menuOpmaak").classList.toggle("show");
+  document.getElementById("menuBeeld").classList.remove("show");
+  document.getElementById("menuHelp").classList.remove("show");
+}
+
+function menuBeeld() {
+  document.getElementById("menuBestand").classList.remove("show");
+  document.getElementById("menuBewerken").classList.remove("show");
+  document.getElementById("menuOpmaak").classList.remove("show");
+  document.getElementById("menuBeeld").classList.toggle("show");
+  document.getElementById("menuHelp").classList.remove("show");
+}
+
+function menuHelp() {
+  document.getElementById("menuBestand").classList.remove("show");
+  document.getElementById("menuBewerken").classList.remove("show");
+  document.getElementById("menuOpmaak").classList.remove("show");
+  document.getElementById("menuBeeld").classList.remove("show");
+  document.getElementById("menuHelp").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(e) {
+  if (!e.target.matches('.dropbtn')) {
+    var myDropdown1 = document.getElementById("menuBestand");
+    if (myDropdown1.classList.contains('show')) {
+      myDropdown1.classList.remove('show');
+    }
+    var myDropdown2 = document.getElementById("menuBewerken");
+    if (myDropdown2.classList.contains('show')) {
+      myDropdown2.classList.remove('show');
+    }
+    var myDropdown3 = document.getElementById("menuOpmaak");
+    if (myDropdown3.classList.contains('show')) {
+      myDropdown3.classList.remove('show');
+    }
+    var myDropdown4 = document.getElementById("menuBeeld");
+    if (myDropdown4.classList.contains('show')) {
+      myDropdown4.classList.remove('show');
+    }
+    var myDropdown5 = document.getElementById("menuHelp");
+    if (myDropdown5.classList.contains('show')) {
+      myDropdown5.classList.remove('show');
+    }
+  }
+}
+
+function nieuw() {
+  document.getElementById("textarea").value = '';
+  localStorage.setItem("filename","Naamloos");
+  document.title = "Naamloos - kladblok";
+}
+
+function nieuwvenster() {
+  window.open("kladblok.html","_blank");
+}
+
+function openen() {
+  document.getElementById("file").click();
+}
+
+function openfile() {
+  var file = document.getElementById("file").files[0];
+  localStorage.setItem("filename",file.name);
+  document.title = file.name + " - kladblok";
+  const reader = new FileReader();
+  reader.addEventListener(
+    "load",
+    () => {
+      // this will then display a text file
+      document.getElementById("textarea").value = reader.result;
+    },
+    false,
+  );
+  if (file) {
+    reader.readAsText(file);
+  }
+}
+
+function opslaan() {
+  const link = document.createElement("a");
+  const content = document.querySelector("textarea").value;
+  const file = new Blob([content], { type: 'text/plain' });
+  link.href = URL.createObjectURL(file);
+  if(localStorage.getItem("filename") == null) {
+    link.download = "Nieuw tekstdocument.txt";
+    localStorage.setItem("filename","Nieuw tekstdocument.txt");
+  } else { 
+    link.download = localStorage.getItem("filename");
+  }
+  document.title = link.download + " - kladblok";
+  link.click();
+  setTimeout(() => {
+      URL.revokeObjectURL(link.href);
+      link.remove();
+    }, 1000);
+}
+
+function opslaanals() {
+  var filename = localStorage.getItem("filename");
+  if(filename == null) filename = "Nieuw tekstdocument.txt";
+  const content = document.querySelector("textarea").value;
+  const blobje = new Blob([content], { type: 'text/plain' });
+  const saveFile = async (blob, suggestedName) => {
+  // Feature detection. The API needs to be supported
+  // and the app not run in an iframe.
+  const supportsFileSystemAccess =
+    'showSaveFilePicker' in window &&
+    (() => {
+      try {
+        return window.self === window.top;
+      } catch {
+        return false;
+      }
+    })();
+  // If the File System Access API is supported…
+  if (supportsFileSystemAccess) {
+    try {
+      // Show the file save dialog.
+      const handle = await showSaveFilePicker({
+        suggestedName,
+      });
+      // Write the blob to the file.
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      var file = await handle.getFile();
+      localStorage.setItem("filename",file.name);
+      document.title = file.name + " - kladblok";
+    } catch (err) {
+      // Fail silently if the user has simply canceled the dialog.
+      if (err.name !== 'AbortError') {
+        console.error(err.name, err.message);
+      }
+    }
+  } else {
+    // Fallback if the File System Access API is not supported…
+    // Create the blob URL.
+    const blobURL = URL.createObjectURL(blob);
+    // Create the `<a download>` element and append it invisibly.
+    const a = document.createElement('a');
+    a.href = blobURL;
+    a.download = suggestedName;
+    a.style.display = 'none';
+    document.body.append(a);
+    // Programmatically click the element.
+    a.click();
+    // Revoke the blob URL and remove the element.
+    setTimeout(() => {
+      URL.revokeObjectURL(blobURL);
+      a.remove();
+    }, 1000);
+    localStorage.setItem("filename",suggestedName);
+    document.title = suggestedName + " - kladblok";
+  }
+};
+  saveFile(blobje,filename);
+}
+
+function afdrukken() {
+  var fontSize = localStorage.getItem("fontsize");
+  if(fontSize==null) {
+    localStorage.setItem("fontsize",12);
+    fontSize = 12;
+  }
+  win = window.open();
+  win.document.write('<html lang="en"><head></head><body style="font-size:"+fontSize+"pt">');
+  var txt=document.getElementById("textarea").value;
+  txt=txt.replace(/\t/gi,'&emsp;');
+  txt=txt.replace(/\n/gi,'<br>');
+  win.document.write(txt);
+  win.document.write('</body></html>');
+  win.document.close();
+  win.print();
+  win.close();
+}
+
+function afsluiten() {
+  window.close();
+}
+
+function selectAll() {
+  document.getElementById("textarea").select();
+}
+
+function insertTimeAndDate() {
+  var d = new Date();
+  var text = d.getHours()+':'+d.getMinutes()+' '+d.getDate()+'/'+(d.getMonth() < 9 ? '0' : '')+(d.getMonth()+1)+'/'+d.getFullYear();
+  var c = getCaret();
+  var area = document.getElementById("textarea").value;
+  document.getElementById("textarea").value = area.substring(0,c) + text + area.substring(c);
+  setCaret(c+text.length);
+}
+
+function getSelection() {
+  var s = document.getElementById("textarea").selectionStart;
+  var e = document.getElementById("textarea").selectionEnd;
+  var txt = document.getElementById("textarea").value.substring(s,e);
+  return { start: s, end: e, text: txt };
+}
+
+function setSelection(start,end) {
+  document.getElementById("textarea").selectionStart = start; 
+  document.getElementById("textarea").selectionEnd = end; 
+  document.getElementById("textarea").focus(); 
+}
+
+function getCaret() {
+  return document.getElementById("textarea").selectionStart;
+}
+
+function setCaret(pos) {
+  setSelection(pos,pos);
+}
+
+function history() {
+  localStorage.setItem("history",localStorage.getItem("current"));
+  localStorage.setItem("current",document.getElementById("textarea").value);
+}
+
+function undo() {
+  document.getElementById("textarea").value = localStorage.getItem("history");
+}
+
+async function cut() {
+  await copy();
+  remove();
+}
+
+async function copy() {
+  try {
+    var s = getSelection();
+    await navigator.clipboard.writeText(s.text);
+    setSelection(s.start,s.end);
+    console.log('Content copied to clipboard');
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+}
+
+async function paste() {
+  try {
+    var text = await navigator.clipboard.readText();
+    var c = getCaret();
+    var area = document.getElementById("textarea").value;
+    document.getElementById("textarea").value = area.substring(0,c) + text + area.substring(c);
+    setCaret(c+text.length);
+    console.log('Content pasted from clipboard');
+  } catch (err) {
+    console.error('Failed to paste: ', err);
+  }
+}
+
+function remove() {
+  var s = getSelection();
+  var area = document.getElementById("textarea").value;
+  document.getElementById("textarea").value = area.substring(0,s.start) + area.substring(s.end);
+  setCaret(s.start);
+}
+
+function zoeken() {
+  var search = localStorage.getItem("search");
+  if(search==null) search = "";
+  let word = prompt("Zoeken naar", search);
+  localStorage.setItem("search",word);
+  var c = getCaret();
+  var start = c + document.getElementById("textarea").value.substring(c).toLowerCase().indexOf(word.toLowerCase());
+  if(start == c-1) {
+    alert('Niets gevonden!');
+    setCaret(c);
+  } else {
+    var end = start + word.length;
+    setSelection(start,end);
+  }
+}
+
+function next() {
+  let word = localStorage.getItem("search");
+  var c = document.getElementById("textarea").selectionEnd;
+  var start = c+document.getElementById("textarea").value.substring(c).toLowerCase().indexOf(word.toLowerCase());
+  if(start == c-1) {
+    alert('Niets gevonden!');
+    setCaret(c);
+  } else {
+    var end = start + word.length;
+    setSelection(start,end);
+  }
+}
+
+function previous() {
+  let word = localStorage.getItem("search");
+  var c = document.getElementById("textarea").selectionStart;
+  var start = document.getElementById("textarea").value.substring(0,c).toLowerCase().lastIndexOf(word.toLowerCase());
+  if(start == -1) {
+    alert('Niets gevonden!');
+    setCaret(c);
+  } else {
+    var end = start + word.length;
+    setSelection(start,end);
+  }
+}
+
+function openDialogVervangen() {
+  document.getElementById("dialogVervangen").showModal();
+}
+
+function allesVervangen() {
+  var zoekenNaar = document.getElementById("zoekenNaar").value;
+  var vervangenDoor = document.getElementById("vervangenDoor").value;
+  document.getElementById("textarea").value = document.getElementById("textarea").value.replaceAll(zoekenNaar,vervangenDoor);
+  document.getElementById("dialogVervangen").close();
+  setCaret(0);
+}
+
+function closeDialogVervangen() {
+  document.getElementById("dialogVervangen").close();
+}
+
+function goto() {
+  var content = document.getElementById("textarea").value;
+  var current = (content.substring(0,getCaret()).split("\n").length - 1);
+  let linenumber = prompt("Regelnummer:", current+1);
+  var c = 0,d = 0;
+  for(var i=1;i<linenumber && d!=-1;i++) {
+    d = content.substring(c).indexOf('\n');
+    if(d != -1) {
+      c += (d+1);
+    }
+  }
+  setCaret(c);
+}
+
+function terugloop() {
+  var x = document.getElementById("textarea");
+  if (x.wrap === "off") {
+    x.wrap = "on";
+    document.getElementById("loop").checked=true;
+  } else {
+    x.wrap = "off";
+    document.getElementById("loop").checked=false;
+  }
+  setCaret(0);
+  
+}
+
+function openDialogLettertype() {
+  document.getElementById('dialogLettertype').showModal();
+}
+
+function submitLettertype() {
+  var l = document.getElementById("lettertype").value;
+  var g = document.getElementById("grootte").value;
+  var zoom = localStorage.getItem("zoom");
+  if(zoom==null) zoom = 100;
+  localStorage.setItem("fontsize",g);
+  document.getElementById("textarea").style.fontFamily = l;
+  setZoom(zoom);
+  document.getElementById("dialogLettertype").close();
+}
+
+function closeDialogLettertype() {
+  document.getElementById('dialogLettertype').close();
+}
+
+function setZoom(zoom) {
+  var fontSize = localStorage.getItem("fontsize");
+  if(fontSize==null) {
+    localStorage.setItem("fontsize",12);
+    fontSize = 12;
+  }
+  document.getElementById("textarea").style.fontSize= Math.floor(12*zoom/100) + 'pt';
+}
+
+function inzoomen() {
+  var zoom = localStorage.getItem("zoom");
+  if(zoom==null) zoom = 100;
+  zoom = parseInt(zoom) + 10;
+  if(zoom > 500) zoom = 500;
+  localStorage.setItem("zoom",zoom);
+  setStatus();
+  setZoom(zoom);
+}
+
+function uitzoomen() {
+  var zoom = localStorage.getItem("zoom");
+  if(zoom==null) zoom = 100;
+  zoom = parseInt(zoom) - 10;
+  if(zoom < 10) zoom = 10;
+  localStorage.setItem("zoom",zoom);
+  setStatus();
+  setZoom(zoom);
+}
+
+function resetZoom() {
+  localStorage.setItem("zoom",100);
+  setStatus();
+  setZoom(100);
+}
+
+function status() {
+  var x = document.getElementById("statusbalk");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    document.getElementById("status").checked=true;
+  } else {
+    x.style.display = "none";
+    document.getElementById("status").checked=false;
+  }
+}
+
+function setStatus() {
+  var content = document.getElementById("textarea").value;
+  var linenumber = (content.substring(0,getCaret()).split("\n").length - 1) + 1;
+  var colom = getCaret() - content.substring(0,getCaret()).lastIndexOf("\n");
+  var zoom = localStorage.getItem("zoom");
+  if(zoom==null) {
+    zoom = 100;
+    localStorage.setItem("zoom",100);
+  }
+  document.getElementById("statusbalk").innerHTML = "Regelnummer: "+linenumber+", Kolom: "+colom+", Zoom: "+zoom+"%";
+}
+
+function help() {
+  window.open("https://www.bing.com/search?q=hulp+krijgen+voor+kladblok+in+windows","_blank");
+}
+
+function feedback() {
+  alert('Mail uw feedback naar andy.vdbroeck@gmail.com');
+}
+  </script>
+ </head>
+ <body onload="localStorage.clear()">
+<div class="navbar">
+  <div class="dropdown">
+  <button class="dropbtn" onclick="menuBestand()">Bestand
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-content" id="menuBestand">
+    <a onclick="nieuw()">Nieuw</a>
+    <a onclick="nieuwvenster()">Nieuw venster</a>
+    <a onclick="openen()">Openen...</a>
+    <a onclick="opslaan()">Opslaan</a>
+    <a onclick="opslaanals()">Opslaan als...</a><hr/>
+    <a onclick="afdrukken()">Afdrukken...</a><hr/>
+    <a onclick="afsluiten()">Afsluiten</a>
+  </div>
+  </div>
+  <div class="dropdown">
+  <button class="dropbtn" onclick="menuBewerken()">Bewerken
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-content" id="menuBewerken">
+    <a onclick="undo()">Ongedaan maken</a><hr/>
+    <a onclick="cut()">Knippen</a>
+    <a onclick="copy()">Kopiëren</a>
+    <a onclick="paste()">Plakken</a>
+    <a onclick="remove()">Verwijderen</a><hr/>
+    <a onclick="zoeken()">Zoeken...</a>
+    <a onclick="next()">Volgende zoeken</a>
+    <a onclick="previous()">Vorige zoeken</a>
+    <a onclick="openDialogVervangen()">Vervangen...</a>
+    <a onclick="goto()">Ga naar...</a><hr/>
+    <a onclick="selectAll()">Alles selecteren</a>
+    <a onclick="insertTimeAndDate()">Tijd/datum</a>
+  </div>
+  </div>
+  <div class="dropdown">
+  <button class="dropbtn" onclick="menuOpmaak()">Opmaak
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-content" id="menuOpmaak">
+    <a onclick="terugloop()"><input type="checkbox" id="loop" name="loop" value="loop" unchecked>Automatische terugloop</a>
+    <a onclick="openDialogLettertype()">Lettertype...</a>
+  </div>
+  </div>
+  <div class="dropdown">
+  <button class="dropbtn" onclick="menuBeeld()">Beeld
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-content" id="menuBeeld">
+    <a onclick="inzoomen()">Inzoomen</a>
+    <a onclick="uitzoomen()">Uitzoomen</a>
+    <a onclick="resetZoom()">Standaardinstelling in-/uitzoomen herstellen</a>
+    <a onclick="status()"><input type="checkbox" id="status" name="status" value="status" checked>Statusbalk.</a>
+  </div>
+  </div>
+  <div class="dropdown">
+  <button class="dropbtn" onclick="menuHelp()">Help
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-content" id="menuHelp">
+    <a onclick="help()">Help weergeven</a>
+    <a onclick="feedback()">Feedback verzenden</a><hr/>
+    <a onclick="alert('Gemaakt door Andy Van den Broeck')">Over Kladblok</a>
+  </div>
+  </div>
+</div>
+<textarea type="text" id="textarea" name="textarea" wrap="off" oninput="history();setStatus()" onclick="setStatus()">
+</textarea>
+<div id="statusbalk">
+Regelnummer: 1, Kolom: 1, Zoom: 100%
+</div>
+<div style="display:none;">
+<input autocomplete="off" type="file" name="file" id="file" accept=".txt" onchange="openfile()"/>
+</div>
+<dialog id="dialogVervangen">
+<table>
+<tr><td>Zoeken naar:</td><td><input type="text" id="zoekenNaar"></td><td><button onclick="allesVervangen()">Alles vervangen</button></td></tr>
+<tr><td>Vervangen door:</td><td><input type="text" id="vervangenDoor"></td><td><button onclick="closeDialogVervangen()">Annuleren</button></td></tr>
+</table>
+</dialog>
+<dialog id="dialogLettertype">
+<table>
+<tr><td>Lettertype:</td><td>grootte:</td></tr>
+<tr><td>
+<select id="lettertype" name="lettertype" size="6">
+<option value="Helvetica">Helvetica</option>
+<option value="Arial" selected="selected">Arial</option>
+<option value="Arial Black">Arial Black</option>
+<option value="Verdana">Verdana</option>
+<option value="Tahoma">Tahoma</option>
+<option value="Trebuchet MS">Trebuchet MS</option>
+<option value="Impact">Impact</option>
+<option value="Gill Sans">GillSans</option>
+<option value="Times New Roman">Times New Roman</option>
+<option value="Georgia">Georgia</option>
+<option value="Palatino">Palatino</option>
+<option value="Baskerville">Baskerville</option>
+<option value="Andalé Mono">Andalé Mono</option>
+<option value="Courier">Courier</option>
+<option value="Lucida">Lucida</option>
+<option value="Monaco">Monaco</option>
+<option value="Bradley Hand">Bradley Hand</option>
+<option value="Brush Script MT">Brush Script MT</option>
+<option value="Luminari">Luminari</option>
+<option value="Comic Sans MS">Comic Sans MS</option>
+</select>
+</td><td>
+<select id="grootte" name="grootte" size="6">
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12" selected="selected">12</option>
+<option value="14">14</option>
+<option value="16">16</option>
+<option value="18">18</option>
+<option value="20">20</option>
+<option value="22">22</option>
+<option value="24">24</option>
+<option value="26">26</option>
+<option value="28">28</option>
+<option value="36">36</option>
+<option value="48">48</option>
+<option value="72">72</option>
+</select>
+</td></tr>
+</table>
+<button onclick="submitLettertype()">Ok</button><button onclick="closeDialogLettertype()">Annuleren</button>
+</dialog>
  </body>
 </html>
