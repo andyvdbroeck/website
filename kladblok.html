@@ -354,7 +354,11 @@ async function paste() {
 function remove() {
   var s = getSelection();
   var area = document.getElementById("textarea").value;
-  document.getElementById("textarea").value = area.substring(0,s.start) + area.substring(s.end);
+  if(s.start == s.end) {
+    document.getElementById("textarea").value = area.substring(0,s.start) + area.substring(s.end+1);
+  } else {
+    document.getElementById("textarea").value = area.substring(0,s.start) + area.substring(s.end);
+  }
   setCaret(s.start);
 }
 
@@ -527,6 +531,93 @@ function help() {
 function feedback() {
   alert('Mail uw feedback naar andy.vdbroeck@gmail.com');
 }
+
+window.addEventListener("keydown", (event) => {//alert(event.keyCode);
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 75) {//Ctrl+K
+    document.getElementById("K").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey && event.keyCode == 75) {//Ctrl+Shift+K
+    document.getElementById("SK").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 79) {//Ctrl+O
+    document.getElementById("O").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 83) {//Ctrl+S
+    document.getElementById("S").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey && event.keyCode == 83) {//Ctrl+Shift+S
+    document.getElementById("SS").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 80) {//Ctrl+P
+    document.getElementById("P").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 90) {//Ctrl+Z
+    document.getElementById("Z").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 88) {//Ctrl+X
+    document.getElementById("X").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 67) {//Ctrl+C
+    document.getElementById("C").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 86) {//Ctrl+V
+    document.getElementById("V").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey == false && event.shiftKey==false && event.keyCode == 46) {//Del
+    document.getElementById("Del").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 70) {//Ctrl+F
+    document.getElementById("F").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 100) {//4
+    document.getElementById("4").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 102) {//6
+    document.getElementById("6").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 72) {//Ctrl+H
+    document.getElementById("H").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 71) {//Ctrl+G
+    document.getElementById("G").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 65) {//Ctrl+A
+    document.getElementById("A").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 101) {//5
+    document.getElementById("5").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 107) {//Ctrl+plusteken
+    document.getElementById("plus").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 109) {//Ctrl+minteken
+    document.getElementById("min").click();
+    event.preventDefault();
+  }
+  if(event.ctrlKey && event.shiftKey==false && event.keyCode == 96) {//Ctrl+0
+    document.getElementById("0").click();
+    event.preventDefault();
+  }
+});
   </script>
  </head>
  <body onload="localStorage.clear()">
@@ -536,12 +627,12 @@ function feedback() {
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-content" id="menuBestand">
-    <a onclick="nieuw()">Nieuw</a>
-    <a onclick="nieuwvenster()">Nieuw venster</a>
-    <a onclick="openen()">Openen...</a>
-    <a onclick="opslaan()">Opslaan</a>
-    <a onclick="opslaanals()">Opslaan als...</a><hr/>
-    <a onclick="afdrukken()">Afdrukken...</a><hr/>
+    <a id="K" onclick="nieuw()">Nieuw (Ctrl+K)</a>
+    <a id="SK" onclick="nieuwvenster()">Nieuw venster (Ctrl+Shift+K)</a>
+    <a id="O" onclick="openen()">Openen... (Ctrl+O)</a>
+    <a id="S" onclick="opslaan()">Opslaan (Ctrl+S)</a>
+    <a id="SS" onclick="opslaanals()">Opslaan als... (Ctrl+Shift+S)</a><hr/>
+    <a id="P" onclick="afdrukken()">Afdrukken... (Ctrl+P)</a><hr/>
     <a onclick="afsluiten()">Afsluiten</a>
   </div>
   </div>
@@ -550,18 +641,18 @@ function feedback() {
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-content" id="menuBewerken">
-    <a onclick="undo()">Ongedaan maken</a><hr/>
-    <a onclick="cut()">Knippen</a>
-    <a onclick="copy()">Kopiëren</a>
-    <a onclick="paste()">Plakken</a>
-    <a onclick="remove()">Verwijderen</a><hr/>
-    <a onclick="zoeken()">Zoeken...</a>
-    <a onclick="next()">Volgende zoeken</a>
-    <a onclick="previous()">Vorige zoeken</a>
-    <a onclick="openDialogVervangen()">Vervangen...</a>
-    <a onclick="goto()">Ga naar...</a><hr/>
-    <a onclick="selectAll()">Alles selecteren</a>
-    <a onclick="insertTimeAndDate()">Tijd/datum</a>
+    <a id="Z" onclick="undo()">Ongedaan maken (Ctrl+Z)</a><hr/>
+    <a id="X" onclick="cut()">Knippen (Ctrl+X)</a>
+    <a id="C" onclick="copy()">Kopiëren (Ctrl+C)</a>
+    <a id="V" onclick="paste()">Plakken (Ctrl+V)</a>
+    <a id="Del" onclick="remove()">Verwijderen (Del)</a><hr/>
+    <a id="F" onclick="zoeken()">Zoeken... (Ctrl+F)</a>
+    <a id="6" onclick="next()">Volgende zoeken (Ctrl+6)</a>
+    <a id="4" onclick="previous()">Vorige zoeken (Ctrl+4)</a>
+    <a id="H" onclick="openDialogVervangen()">Vervangen... (Ctrl+H)</a>
+    <a id="G" onclick="goto()">Ga naar... (Ctrl+G)</a><hr/>
+    <a id="A" onclick="selectAll()">Alles selecteren (Ctrl+A)</a>
+    <a id="5" onclick="insertTimeAndDate()">Tijd/datum (Ctrl+5)</a>
   </div>
   </div>
   <div class="dropdown">
@@ -578,9 +669,9 @@ function feedback() {
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-content" id="menuBeeld">
-    <a onclick="inzoomen()">Inzoomen</a>
-    <a onclick="uitzoomen()">Uitzoomen</a>
-    <a onclick="resetZoom()">Standaardinstelling in-/uitzoomen herstellen</a>
+    <a id="plus"onclick="inzoomen()">Inzoomen (Ctrl+minteken)</a>
+    <a id="min" onclick="uitzoomen()">Uitzoomen (Ctrl+plusteken)</a>
+    <a id="0" onclick="resetZoom()">Standaardinstelling in-/uitzoomen herstellen (Ctrl+0)</a>
     <a onclick="status()"><input type="checkbox" id="status" name="status" value="status" checked>Statusbalk.</a>
   </div>
   </div>
