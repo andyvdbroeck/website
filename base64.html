@@ -1,0 +1,40 @@
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>image to base64</title>
+  <link rel="icon" type="image/x-icon" href="base64.ico">
+  <style>
+body {
+  height: 90%;
+}
+textarea {
+  font-family: Arial;
+  font-size: 12pt;
+  resize: none;
+  width: 100%;
+  height: 85vh;
+}
+  </style>
+  <script>
+  function encodeImageFileAsURL() {
+
+    var filesSelected = document.getElementById("inputFileToLoad").files;
+    if (filesSelected.length > 0) {
+      var fileToLoad = filesSelected[0];
+
+      var fileReader = new FileReader();
+
+      fileReader.onload = function(fileLoadedEvent) {
+        var srcData = fileLoadedEvent.target.result; // <--- data: base64
+        document.getElementById("text").value = srcData;
+      }
+      fileReader.readAsDataURL(fileToLoad);
+    }
+  }
+  </script>
+ </head>
+ <body>
+  <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" /><br/>
+  <textarea id="text"></textarea>
+ </body>
+</html>
