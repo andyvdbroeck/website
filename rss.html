@@ -1,0 +1,55 @@
+<html>
+ <head>
+  <title>RSS feed reader</title>
+    <link rel="icon" type="image/x-icon" href="rss.ico">
+  <style>
+   .heading {
+     background-color:blue;
+   }
+   .heading:hover {
+     cursor:hand;
+   }
+   .content {
+     background-color:gray;
+     display:block;
+   }
+  </style>
+  <script>
+   function toggle(id) {
+     var div = document.getElementById(id);
+     if(div.style.display === 'none') {
+       div.style.display = 'block';
+     } else {
+       div.style.display = 'none';
+     }
+   }
+  </script>
+ </head>
+ <body>
+<div class="heading" onclick="toggle('c1')"><h1><u>The bulletin</u></h1></div>
+<div id="c1" class="content">
+<script src="https://rss.bloople.net/?url=https%3A%2F%2Fwww.thebulletin.be%2Frss.xml&showtitle=false&type=js"></script>
+</div>
+<br/>
+
+<div class="heading" onclick="toggle('c2')"><h1><u>Het Laatste Nieuws</u></h1></div>
+<div id="c2" class="content">
+<script src="https://rss.bloople.net/?url=https%3A%2F%2Fwww.hln.be%2Fhome%2Frss.xml&showtitle=false&type=js"></script>
+</div>
+<br/>
+
+<div class="heading" onclick="toggle('c3')"><h1><u>De Morgen</u></h1></div>
+<div id="c3" class="content">
+<script src="https://rss.bloople.net/?url=https%3A%2F%2Fwww.demorgen.be%2Fin-het-nieuws%2Frss.xml&showtitle=false&type=js"></script>
+</div>
+<br/>
+
+<div class="heading" onclick="toggle('c4')"><h1><u>Brussels Morning</u></h1></div>
+<div id="c4" class="content">
+<script src="https://rss.bloople.net/?url=https%3A%2F%2Fwww.brusselsmorning.com%2Ffeed&showtitle=false&type=js"></script>
+</div>
+<br/>
+
+ </body>
+</html>
+
