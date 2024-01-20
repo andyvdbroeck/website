@@ -620,5 +620,16 @@
       <td id="88" onclick="changeValue(this)"></td>
     </tr>
   </table>
+  <script>
+    if(window.innerHeight > window.innerWidth) {
+      for(var i=1;i<=8;i++) {
+       for(var j=1;j<=8;j++) {
+        var id = i + '' + j;
+        document.getElementById(id).style.width = '10vw';
+        document.getElementById(id).style.height = '10vw';
+       }
+      }
+    }
+  </script>
 </body>
 </html>
