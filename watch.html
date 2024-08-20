@@ -1,0 +1,51 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="js svg smartwatch">
+  <meta name="keywords" content="JavaScript,smartwatch,svg">
+  <meta name="author" content="Andy Van den Broeck">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>timestamp</title>
+  <link rel="icon" href="watch.ico" type="image/x-icon" />
+</head>
+  <body>
+    <div id="watch"></div>
+  </body>
+  <script>
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function rotate(value, seconds) {
+  var position = seconds % 20;
+  var string ="";
+  for(var i=0;i<position;i++) {
+    string += ".";
+  }
+  var j=0;
+  for(var k=position;k<20;k++) {
+    if(j<value.length) {
+      string += value[j];
+      j++;
+    } else {
+      string += ".";
+    }
+  }
+  for(var l=0;j<value.length;l++) {
+    string = string.substring(0,l)+value[j]+string.substring(l+1);
+    j++;
+  }
+  return string;
+}
+function refresh() {
+  const now = new Date();
+  const day = now.getDate();
+  const month = months[now.getMonth()];
+  const year = now.getFullYear();
+  const datum = rotate(day + "." + month + "." + year, now.getSeconds());
+  const hours = ((now.getHours()<10)?"0":"")+now.getHours();
+  const minutes = ((now.getMinutes()<10)?"0":"")+now.getMinutes();
+  const seconds = ((now.getSeconds()<10)?"0":"")+now.getSeconds();
+  document.getElementById("watch").innerHTML = '<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="SunCatcherStudio" fill="none" stroke="none" d="M 32.550491,148.48008 A -108.15144,-108.15144 0 0 1 140.70194,40.328644 -108.15144,-108.15144 0 0 1 248.85338,148.48008 -108.15144,-108.15144 0 0 1 140.70194,256.63153 -108.15144,-108.15144 0 0 1 32.550491,148.48008 Z" /><text font-size="30" fill="#000000" letter-spacing="20" font-family="sans-serif" font-weight="bold"> <textPath xlink:href="#SunCatcherStudio" side="left" startOffset="5">'+ datum +'</textPath></text><text x="60" y="170" fill="black" font-size="60" font-weight="bold">'+hours+':'+minutes+'</text><text x="170" y="210" fill="black" font-size="30" font-weight="bold">'+seconds+'</text></svg>';
+  setTimeout(refresh,"1000");
+}
+refresh();
+  </script>
+</html>
